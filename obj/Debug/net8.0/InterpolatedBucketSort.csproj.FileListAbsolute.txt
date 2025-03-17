@@ -1,0 +1,14 @@
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\bin\Debug\net8.0\InterpolatedBucketSort.exe
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\bin\Debug\net8.0\InterpolatedBucketSort.deps.json
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\bin\Debug\net8.0\InterpolatedBucketSort.runtimeconfig.json
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\bin\Debug\net8.0\InterpolatedBucketSort.dll
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\bin\Debug\net8.0\InterpolatedBucketSort.pdb
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.AssemblyInfoInputs.cache
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.AssemblyInfo.cs
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.csproj.CoreCompileInputs.cache
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.dll
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\refint\InterpolatedBucketSort.dll
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.pdb
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.genruntimeconfig.cache
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\ref\InterpolatedBucketSort.dll
