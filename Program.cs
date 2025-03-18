@@ -59,6 +59,68 @@ class Program
             testCase30[i] = random.Next(int.MinValue, int.MaxValue);
         }
 
+        // Extreme Test Cases
+        int[] testCase31 = new int[2000]; // 1000 values near int.Min, 1000 near int.Max
+        for (int i = 0; i < 1000; i++)
+        {
+            testCase31[i] = random.Next(int.MinValue, int.MinValue / 2);
+        }
+        for (int i = 1000; i < 2000; i++)
+        {
+            testCase31[i] = random.Next(int.MaxValue / 2, int.MaxValue);
+        }
+
+        int[] testCase32 = Enumerable.Range(0, 1000)
+            .Select((_, i) => i % 2 == 0 ? int.MinValue : int.MaxValue).ToArray(); // Alternating Min and Max
+
+        int[] testCase33 = Enumerable.Repeat(42, 1000).ToArray(); // Dense duplicates with an outlier
+        testCase33[999] = random.Next(int.MinValue, int.MaxValue); // Set the outlier
+
+        int[] testCase34 = Enumerable.Range(1, 1000).ToArray(); // Sorted blocks
+        for (int i = 0; i < 10; i++) Array.Reverse(testCase34, i * 100, 100);
+
+        int[] testCase35 = new int[1000]; // Sparse range
+        for (int i = 0; i < testCase35.Length; i++)
+        {
+            testCase35[i] = random.Next(int.MinValue, int.MaxValue) / random.Next(10, 1000);
+        }
+
+        int[] testCase36 = new int[2000]; // Zigzag wide range
+        for (int i = 0; i < 1000; i++)
+        {
+            testCase36[2 * i] = i * 1000; // Increasing
+            testCase36[2 * i + 1] = int.MaxValue - i * 1000; // Decreasing
+        }
+
+        int[] testCase37 = Enumerable.Range(1, 1000).ToArray(); // Nearly sorted with random inserts
+        for (int i = 0; i < testCase37.Length / 10; i++)
+        {
+            int idx1 = random.Next(0, testCase37.Length);
+            int idx2 = random.Next(0, testCase37.Length);
+            (testCase37[idx1], testCase37[idx2]) = (testCase37[idx2], testCase37[idx1]);
+        }
+
+        int[] testCase38 = new int[100000]; // Large dataset simulating floats
+        for (int i = 0; i < testCase38.Length; i++)
+        {
+            testCase38[i] = random.Next(-100000, 100000) * random.Next(1, 1000);
+        }
+
+        int[] testCase39 = new int[10000000];
+
+        for (int i = 0; i < testCase39.Length; i++)
+        {
+            testCase39[i] = random.Next(int.MinValue, int.MaxValue);
+        }
+
+        // Fails this test case, too large :(
+        //int[] testCase40 = new int[100000000];
+
+        //for (int i = 0; i < testCase40.Length; i++)
+        //{
+        //    testCase40[i] = random.Next(int.MinValue, int.MaxValue);
+        //}
+
         RunTestCase(testCase1, "Test Case 1: Random Unsorted");
         RunTestCase(testCase2, "Test Case 2: Another Random");
         RunTestCase(testCase3, "Test Case 3: Already Sorted");
@@ -89,20 +151,52 @@ class Program
         RunTestCase(testCase28, "Test Case 28: Small Random Array");
         RunTestCase(testCase29, "Test Case 29: Random Wide Range");
         RunTestCase(testCase30, "Test Case 30: 1,000,000 Random numbers from Int.Min to Int.Max");
+        RunTestCase(testCase31, "Test Case 31: Split Between Int.Min and Int.Max");
+        RunTestCase(testCase32, "Test Case 32: Alternating Min and Max");
+        RunTestCase(testCase33, "Test Case 33: Dense Duplicates with One Outlier");
+        RunTestCase(testCase34, "Test Case 34: Sorted Blocks");
+        RunTestCase(testCase35, "Test Case 35: Sparse Range");
+        RunTestCase(testCase36, "Test Case 36: Zigzag Wide Range");
+        RunTestCase(testCase37, "Test Case 37: Nearly Sorted with Random Inserts");
+        RunTestCase(testCase38, "Test Case 38: Simulated Floats (Large Dataset)");
+        RunTestCase(testCase39, "Test Case 39: 10,000,000 Random numbers from Int.Min to Int.Max");
+        //RunTestCase(testCase40, "Test Case 40: 100,000,000 Random numbers from Int.Min to Int.Max");
     }
 
     static void RunTestCase(int[] values, string testCaseName)
     {
+        Console.WriteLine(testCaseName);
         // Your sorting algorithm
-        Stopwatch sw1 = Stopwatch.StartNew();
-        int[] sortedList = RecursiveInterpolationSortWithBuckets(values);
-        sw1.Stop();
+        Stopwatch sw = Stopwatch.StartNew();
+        var interpolatedSort = new Sorters.InterpolatedBucketSort();
+        var sortedList = interpolatedSort.Sort(values);
+        sw.Stop();
+        var interpolateSortElapsedTicks = sw.ElapsedTicks;
+
+        var mergeSort = new Sorters.MergeSort();
+        sw = Stopwatch.StartNew();
+        _ = mergeSort.Sort(values);
+        sw.Stop();
+        var mergeSortElapsedTicks = sw.ElapsedTicks;
+
+        var heapSort = new Sorters.HeapSort();
+        sw = Stopwatch.StartNew();
+        _ = heapSort.Sort(values);
+        sw.Stop();
+        var heapSortElapsedTicks = sw.ElapsedTicks;
+
+        var quickSort = new Sorters.QuickSort();
+        sw = Stopwatch.StartNew();
+        // Quick sort isn't very good with super large datasets :(
+        _ = quickSort.Sort(values);
+        sw.Stop();
+        var quickSortElapsedTicks = sw.ElapsedTicks;
+
+        Console.WriteLine($"Elapsed ticks - interpolated bucket sort:{interpolateSortElapsedTicks}, merge sort:{mergeSortElapsedTicks}, heap sort:{heapSortElapsedTicks}, quick sort:{quickSortElapsedTicks}");
 
         // Built-in sorting for validation
-        int[] expected = values.ToArray(); // Make a copy
-        Stopwatch sw2 = Stopwatch.StartNew();
+        int[] expected = values.ToArray();
         Array.Sort(expected);
-        sw2.Stop();
 
         Console.WriteLine(testCaseName);
         //Console.WriteLine("Original List: " + string.Join(", ", values));
@@ -139,80 +233,6 @@ class Program
 
         // Reset console color
         Console.ResetColor();
-        Console.WriteLine($"Elapsed ticks - csharp:{sw2.ElapsedTicks}, custom algo:{sw1.ElapsedTicks}");
         Console.WriteLine();
-    }
-
-    static int[] RecursiveInterpolationSortWithBuckets(int[] values)
-    {
-        int n = values.Length;
-
-        // Base case: If the array is small enough, return it sorted
-        if (n <= 1)
-        {
-            return values;
-        }
-
-        int min = values[0];
-        int max = values[0];
-
-        for(int i=0; i<values.Length; i++)
-        {
-            if(values[i] < min)
-            {
-                min = values[i];
-            }
-            if(values[i] > max)
-            {
-                max = values[i];
-            }
-        }
-
-        // Handle edge case where all values are the same
-        if (min == max)
-        {
-            return values; // Already sorted
-        }
-
-        // Step 2: Create buckets
-        List<int>[] buckets = new List<int>[n];
-        for (int i = 0; i < n; i++)
-        {
-            buckets[i] = new List<int>();
-        }
-
-        // Step 3: Assign values to buckets
-        foreach (int value in values)
-        {
-            // Compute the normalized position, i.e. the min-max interpolation formula
-            double normalizedValue = (double)(value - min) / (max - min);
-            double rawPosition = normalizedValue * (n - 1);
-
-            // Map to bucket index (clamped to valid range)
-            int bucketIndex = (int)Math.Floor(rawPosition);
-            bucketIndex = Math.Max(0, Math.Min(bucketIndex, n - 1));
-
-            // Insert value into the corresponding bucket
-            buckets[bucketIndex].Add(value);
-        }
-
-        // Step 4: Recursively sort each bucket
-        for (int i = 0; i < buckets.Length; i++)
-        {
-            if (buckets[i].Count > 1)
-            {
-                // Recursive call to sort the bucket
-                buckets[i] = RecursiveInterpolationSortWithBuckets(buckets[i].ToArray()).ToList();
-            }
-        }
-
-        // Step 5: Flatten the buckets into the output array
-        List<int> result = new List<int>();
-        foreach (var bucket in buckets)
-        {
-            result.AddRange(bucket);
-        }
-
-        return result.ToArray();
     }
 }

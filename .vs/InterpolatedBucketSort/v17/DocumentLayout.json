@@ -5,6 +5,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{E34625B2-ABFD-4B7E-B003-483B4AD42181}|InterpolatedBucketSort.csproj|c:\\users\\twink\\onedrive\\documents\\c#\\playingaroundwithsorting\\interpolatedbucketsort\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E34625B2-ABFD-4B7E-B003-483B4AD42181}|InterpolatedBucketSort.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E34625B2-ABFD-4B7E-B003-483B4AD42181}|InterpolatedBucketSort.csproj|c:\\users\\twink\\onedrive\\documents\\c#\\playingaroundwithsorting\\interpolatedbucketsort\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{E34625B2-ABFD-4B7E-B003-483B4AD42181}|InterpolatedBucketSort.csproj|solutionrelative:readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E34625B2-ABFD-4B7E-B003-483B4AD42181}|InterpolatedBucketSort.csproj|c:\\users\\twink\\onedrive\\documents\\c#\\playingaroundwithsorting\\interpolatedbucketsort\\sorting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E34625B2-ABFD-4B7E-B003-483B4AD42181}|InterpolatedBucketSort.csproj|solutionrelative:sorting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +22,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Users\\twink\\OneDrive\\Documents\\C#\\PlayingAroundWithSorting\\InterpolatedBucketSort\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "C:\\Users\\twink\\OneDrive\\Documents\\C#\\PlayingAroundWithSorting\\InterpolatedBucketSort\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAABcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-03-18T06:02:34.942Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Sorting.cs",
+              "DocumentMoniker": "C:\\Users\\twink\\OneDrive\\Documents\\C#\\PlayingAroundWithSorting\\InterpolatedBucketSort\\Sorting.cs",
+              "RelativeDocumentMoniker": "Sorting.cs",
+              "ToolTip": "C:\\Users\\twink\\OneDrive\\Documents\\C#\\PlayingAroundWithSorting\\InterpolatedBucketSort\\Sorting.cs",
+              "RelativeToolTip": "Sorting.cs",
+              "ViewState": "AQIAAOEAAAAAAAAAAAAYwA4BAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T04:48:35.701Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +58,7 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\twink\\OneDrive\\Documents\\C#\\PlayingAroundWithSorting\\InterpolatedBucketSort\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAJAAAAAAAAAAAAAowAUAAAABAAAA",
+              "ViewState": "AQIAAJsAAAAAAAAAAAAewL4AAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-17T21:58:26.169Z",
               "EditorCaption": ""

@@ -12,3 +12,4 @@ C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucket
 C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.pdb
 C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.genruntimeconfig.cache
 C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\ref\InterpolatedBucketSort.dll
+C:\Users\twink\OneDrive\Documents\C#\PlayingAroundWithSorting\InterpolatedBucketSort\obj\Debug\net8.0\InterpolatedBucketSort.sourcelink.json
