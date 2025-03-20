@@ -64,7 +64,7 @@ could be further enhanced by eliminating the need for both bucket logic and recu
 
 ## Conclusion
 
-After dedicating countless hours to this project, I came to realize that this algorithm had already been discovered.. Here is the [wikipedia](https://en.wikipedia.org/wiki/Interpolation_sort) source.
+After dedicating countless hours to this project, I came to realize that this algorithm had already been discovered. Here is the [wikipedia](https://en.wikipedia.org/wiki/Interpolation_sort) source.
 Though, this project still represents a deep dive into algorithm design and testing. Interpolated Bucket Sort combines traditional sorting concepts with innovative interpolation strategies,
 resulting in a resilient and efficient sorting algorithm. Whether you're exploring new approaches to sorting or simply testing the limits of algorithmic performance, this project
 is a testament to what can be achieved through curiosity and determination. 
