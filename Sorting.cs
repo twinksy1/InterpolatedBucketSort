@@ -1,132 +1,128 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sorters
 {
-    internal interface Sorter
+    internal interface Sorter<T> where T : IComparable<T>
     {
-        public int[] Sort(int[] array);
+        public T[] Sort(T[] array);
     }
 
-    public class InterpolatedBucketSort : Sorter
+    public class InterpolatedBucketSort<T> : Sorter<T> where T : IComparable<T>
     {
-        public int[] Sort(int[] array)
+        public T[] Sort(T[] array)
         {
-            return RecursiveInterpolationSortWithBuckets(array);
+            return InterpolatedBucketSortImpl(array);
         }
 
-        static int[] RecursiveInterpolationSortWithBuckets(int[] values)
+        private static T[] InterpolatedBucketSortImpl(T[] values)
         {
             int n = values.Length;
+            if (n <= 1) return values;
 
-            // Base case: If the array is small enough, return it sorted
-            if (n <= 1)
+            T minValue = values[0];
+            T maxValue = values[0];
+
+            // Step 1: Find min and max values
+            foreach (var val in values)
             {
-                return values;
+                if (val.CompareTo(minValue) < 0) minValue = val;
+                if (val.CompareTo(maxValue) > 0) maxValue = val;
             }
+            if (minValue.CompareTo(maxValue) == 0) return values; // All values are identical
 
-            int min = values[0];
-            int max = values[0];
+            // Step 2: Determine dynamic bucket count
+            int bucketCount = Math.Max(Math.Min(n / 100, 1000), 10);
 
-            for (int i = 0; i < values.Length; i++)
-            {
-                if (values[i] < min)
-                {
-                    min = values[i];
-                }
-                if (values[i] > max)
-                {
-                    max = values[i];
-                }
-            }
-
-            // Handle edge case where all values are the same
-            if (min == max)
-            {
-                return values; // Already sorted
-            }
-
-            // Step 2: Create buckets
-            List<int>[] buckets = new List<int>[n];
+            // Step 3: Cache normalized values
+            double[] normalizedValues = new double[n];
             for (int i = 0; i < n; i++)
             {
-                buckets[i] = new List<int>();
+                normalizedValues[i] = Math.Clamp((double)(Convert.ToDouble(values[i]) - Convert.ToDouble(minValue)) /
+                                                 (Convert.ToDouble(maxValue) - Convert.ToDouble(minValue)), 0.0, 1.0);
             }
 
-            // Step 3: Assign values to buckets
-            foreach (int value in values)
+            // Step 4: Create buckets
+            int[] bucketSizes = new int[bucketCount];
+            for (int i = 0; i < n; i++)
             {
-                // Compute the normalized position, i.e. the min-max interpolation formula
-                double normalizedValue = (double)(value - min) / (max - min);
-                double rawPosition = normalizedValue * (n - 1);
-
-                // Map to bucket index (clamped to valid range)
-                int bucketIndex = (int)Math.Floor(rawPosition);
-                bucketIndex = Math.Max(0, Math.Min(bucketIndex, n - 1));
-
-                // Insert value into the corresponding bucket
-                buckets[bucketIndex].Add(value);
+                int bucketIndex = (int)(normalizedValues[i] * bucketCount);
+                bucketIndex = Math.Min(bucketIndex, bucketCount - 1);
+                bucketSizes[bucketIndex]++;
             }
 
-            // Step 4: Recursively sort each bucket
-            for (int i = 0; i < buckets.Length; i++)
+            T[][] buckets = new T[bucketCount][];
+            for (int i = 0; i < bucketCount; i++)
             {
-                if (buckets[i].Count > 1)
+                buckets[i] = new T[bucketSizes[i]];
+            }
+
+            int[] bucketCounters = new int[bucketCount];
+            for (int i = 0; i < n; i++)
+            {
+                int bucketIndex = (int)(normalizedValues[i] * bucketCount);
+                bucketIndex = Math.Min(bucketIndex, bucketCount - 1);
+                buckets[bucketIndex][bucketCounters[bucketIndex]++] = values[i];
+            }
+
+            // Step 5: Sort buckets recursively
+            T[] sortedValues = new T[n];
+            int idx = 0;
+
+            for (int i = 0; i < bucketCount; i++)
+            {
+                if (bucketSizes[i] > 0)
                 {
-                    // Recursive call to sort the bucket
-                    buckets[i] = RecursiveInterpolationSortWithBuckets(buckets[i].ToArray()).ToList();
+                    if (bucketSizes[i] == 1)
+                    {
+                        sortedValues[idx++] = buckets[i][0];
+                    }
+                    else
+                    {
+                        T[] sortedBucket = InterpolatedBucketSortImpl(buckets[i]);
+                        foreach (var val in sortedBucket)
+                        {
+                            sortedValues[idx++] = val;
+                        }
+                    }
                 }
             }
 
-            // Step 5: Flatten the buckets into the output array
-            List<int> result = new List<int>();
-            foreach (var bucket in buckets)
-            {
-                result.AddRange(bucket);
-            }
-
-            return result.ToArray();
+            return sortedValues;
         }
     }
 
-    public class MergeSort : Sorter
+    public class MergeSort<T> : Sorter<T> where T : IComparable<T>
     {
-        public int[] Sort(int[] array)
+        public T[] Sort(T[] array)
         {
             if (array.Length <= 1)
                 return array;
 
             int mid = array.Length / 2;
+            T[] left = array.Take(mid).ToArray();
+            T[] right = array.Skip(mid).ToArray();
 
-            // Divide the array into two halves
-            int[] left = array.Take(mid).ToArray();
-            int[] right = array.Skip(mid).ToArray();
-
-            // Recursively sort both halves
             left = Sort(left);
             right = Sort(right);
 
-            // Merge the sorted halves
             return Merge(left, right);
         }
 
-        private int[] Merge(int[] left, int[] right)
+        private T[] Merge(T[] left, T[] right)
         {
-            List<int> result = new List<int>();
+            List<T> result = new List<T>();
             int i = 0, j = 0;
 
             while (i < left.Length && j < right.Length)
             {
-                if (left[i] <= right[j])
+                if (left[i].CompareTo(right[j]) <= 0)
                     result.Add(left[i++]);
                 else
                     result.Add(right[j++]);
             }
 
-            // Add remaining elements from left or right
             result.AddRange(left.Skip(i));
             result.AddRange(right.Skip(j));
 
@@ -134,44 +130,36 @@ namespace Sorters
         }
     }
 
-    public class HeapSort : Sorter
+    public class HeapSort<T> : Sorter<T> where T : IComparable<T>
     {
-        public int[] Sort(int[] array)
+        public T[] Sort(T[] array)
         {
             int n = array.Length;
 
-            // Build the max-heap
             for (int i = n / 2 - 1; i >= 0; i--)
                 Heapify(array, n, i);
 
-            // Extract elements from the heap
             for (int i = n - 1; i >= 0; i--)
             {
-                // Move current root to the end
                 (array[0], array[i]) = (array[i], array[0]);
-
-                // Heapify the reduced heap
                 Heapify(array, i, 0);
             }
 
             return array;
         }
 
-        private void Heapify(int[] array, int n, int i)
+        private void Heapify(T[] array, int n, int i)
         {
             int largest = i;
             int left = 2 * i + 1;
             int right = 2 * i + 2;
 
-            // Check if left child is larger than root
-            if (left < n && array[left] > array[largest])
+            if (left < n && array[left].CompareTo(array[largest]) > 0)
                 largest = left;
 
-            // Check if right child is larger than root
-            if (right < n && array[right] > array[largest])
+            if (right < n && array[right].CompareTo(array[largest]) > 0)
                 largest = right;
 
-            // Swap and recursively heapify
             if (largest != i)
             {
                 (array[i], array[largest]) = (array[largest], array[i]);
@@ -180,9 +168,9 @@ namespace Sorters
         }
     }
 
-    public class QuickSort : Sorter
+    public class QuickSort<T> : Sorter<T> where T : IComparable<T>
     {
-        public int[] Sort(int[] array)
+        public T[] Sort(T[] array)
         {
             if (array == null || array.Length <= 1)
             {
@@ -193,7 +181,7 @@ namespace Sorters
             return array;
         }
 
-        private void QuickSortImpl(int[] array, int low, int high)
+        private void QuickSortImpl(T[] array, int low, int high)
         {
             // Create a stack to simulate recursion
             Stack<(int Low, int High)> stack = new Stack<(int, int)>();
@@ -206,10 +194,9 @@ namespace Sorters
                 // Pop the range to process
                 var (start, end) = stack.Pop();
 
-                // Only proceed if the range is valid
                 if (start < end)
                 {
-                    // Partition the array and get the pivot index
+                    // Partition the array and get the pivot index using Median of Three
                     int pivotIndex = MedianOfThreePartition(array, start, end);
 
                     // Push the sub-range for elements left of the pivot
@@ -227,21 +214,21 @@ namespace Sorters
             }
         }
 
-        private int MedianOfThreePartition(int[] array, int low, int high)
+        private int MedianOfThreePartition(T[] array, int low, int high)
         {
             // Calculate the middle index
             int mid = low + (high - low) / 2;
 
             // Find the median of the first, middle, and last elements
-            if (array[low] > array[mid])
+            if (array[low].CompareTo(array[mid]) > 0)
             {
                 (array[low], array[mid]) = (array[mid], array[low]);
             }
-            if (array[low] > array[high])
+            if (array[low].CompareTo(array[high]) > 0)
             {
                 (array[low], array[high]) = (array[high], array[low]);
             }
-            if (array[mid] > array[high])
+            if (array[mid].CompareTo(array[high]) > 0)
             {
                 (array[mid], array[high]) = (array[high], array[mid]);
             }
@@ -250,16 +237,15 @@ namespace Sorters
             (array[mid], array[high]) = (array[high], array[mid]);
 
             // Perform partitioning using the pivot
-            int pivot = array[high];
+            T pivot = array[high];
             int i = low - 1;
 
             for (int j = low; j < high; j++)
             {
-                if (array[j] <= pivot)
+                if (array[j].CompareTo(pivot) <= 0)
                 {
                     i++;
-                    // Swap array[i] and array[j]
-                    (array[i], array[j]) = (array[j], array[i]);
+                    (array[i], array[j]) = (array[j], array[i]); // Swap elements
                 }
             }
 
@@ -268,5 +254,4 @@ namespace Sorters
             return i + 1; // Return the pivot index
         }
     }
-
 }

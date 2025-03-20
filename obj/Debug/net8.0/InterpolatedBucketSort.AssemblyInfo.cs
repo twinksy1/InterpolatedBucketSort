@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InterpolatedBucketSort")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4606ed68e1977352bc4e095ddd45118aad64d120")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+43d141896b3acd2066522ca3c5a78b805f746245")]
 [assembly: System.Reflection.AssemblyProductAttribute("InterpolatedBucketSort")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InterpolatedBucketSort")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
